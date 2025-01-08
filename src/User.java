@@ -33,6 +33,7 @@ public class User {
     }
 
     public static ArrayList<User> getAllUsers(Connection connection) throws SQLException {
+
         ArrayList <User> users = new ArrayList<>();
 
         String query = "SELECT * FROM user";

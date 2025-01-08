@@ -1,23 +1,27 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Main {
+
+    private static Connection connection;
+
     public static void main(String[] args) {
 
-        Connection dbConnection;
+        connection = DatabaseConnection.getConnection();
+//        Connection dbConnection;
+//
+//        try {
+//            dbConnection = DatabaseConnection.getConnection();
+//            System.out.println("Connexion BDD OK");
+//
+//            User.getAllUsers(dbConnection).forEach(p -> System.out.println(p.getFirstname()));
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-        try {
-            String url = "jdbc:mysql://localhost:3306/contact";
-            String user = "root";
-            String password = "";
-            dbConnection = DriverManager.getConnection(url, user, password);
-            System.out.println("connexion bdd ok");
-
-            User.getAllUsers(dbConnection).forEach(p -> System.out.println(p.getFirstname()));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new ContactFrame("Contacts", connection);
 
 
 
