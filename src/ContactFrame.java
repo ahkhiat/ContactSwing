@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ContactFrame extends JFrame implements ActionListener {
@@ -31,10 +32,8 @@ public class ContactFrame extends JFrame implements ActionListener {
         contactTextArea = new JTextArea();
         buttonPanel = new JPanel();
 
-        Font font = new Font("Arial", Font.PLAIN , 16);
+        Font font = new Font("Arial", Font.PLAIN , 14);
         contactTextArea.setFont(font);
-        contactTextArea.setSize(350,150);
-
         interPanel.add(contactTextArea);
     }
 
@@ -59,18 +58,19 @@ public class ContactFrame extends JFrame implements ActionListener {
     }
 
     public static void loadUsers(Connection connection) {
+        StringBuilder stringUser = new StringBuilder();
 
         try {
             contactTextArea.setText("");
-            ArrayList<User> users = User.getAllUsers(connection);
-
+            ArrayList<User> users = UserData.getAllUsers(connection);
             users.forEach(u -> {
-                StringBuilder stringUser = new StringBuilder();
-
                 stringUser.append(u.getId()).append(" ").append(u.getFirstname()).append(" ").append(u.getLastname()).append(" ").append(u.getPhone()).append("\n");
-                contactTextArea.append(stringUser.toString());
             });
 
+            if (stringUser.length() > 1) {
+                stringUser.deleteCharAt(stringUser.length()-1);
+            }
+            contactTextArea.append(stringUser.toString());
         } catch (Exception e) {
             System.out.println(e);
         }
