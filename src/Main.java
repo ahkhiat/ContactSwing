@@ -8,20 +8,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        connection = DatabaseConnection.getConnection();
-//        Connection dbConnection;
-//
-//        try {
-//            dbConnection = DatabaseConnection.getConnection();
-//            System.out.println("Connexion BDD OK");
-//
-//            User.getAllUsers(dbConnection).forEach(p -> System.out.println(p.getFirstname()));
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        Connection dbConnection;
 
-        new ContactFrame("Contacts", connection);
+        try {
+            dbConnection = DatabaseConnection.getConnection();
+            System.out.println("Connexion BDD OK");
+
+            new ContactFrame("Contacts", dbConnection);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
 
 

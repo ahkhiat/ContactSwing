@@ -6,6 +6,7 @@ public class User {
     long id;
     String firstname;
     String lastname;
+    String phone;
 
 
     public long getId() {
@@ -32,9 +33,19 @@ public class User {
         this.lastname = lastname;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    // NE PAS FAIRE CA !!
+    // Mettre les méthodes d'acces aux données dans une autre classe
     public static ArrayList<User> getAllUsers(Connection connection) throws SQLException {
 
-        ArrayList <User> users = new ArrayList<>();
+        ArrayList <User> usersList = new ArrayList<>();
 
         String query = "SELECT * FROM user";
         Statement statement = connection.createStatement();
@@ -45,24 +56,24 @@ public class User {
             user.setId(rs.getLong("id"));
             user.setFirstname(rs.getString("firstname"));
             user.setLastname(rs.getString("lastname"));
+            user.setPhone(rs.getString("phone"));
 
-            users.add(user);
+            usersList.add(user);
         }
 
         rs.close();
         statement.close();
-        return users;
+        return usersList;
     }
 
-
-
-    public static void addPers(Connection connection, User personne) throws SQLException {
-        String query = "INSERT INTO personne (nom_personne, prenom_personne) " +
-                "VALUES (?, ?)";
+    public static void addUser(Connection connection, User user) throws SQLException {
+        String query = "INSERT INTO user (firstname, lastname, phone) " +
+                "VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-        preparedStatement.setString(1, personne.getFirstname());
-        preparedStatement.setString(2, personne.getLastname());
+        preparedStatement.setString(1, user.getFirstname());
+        preparedStatement.setString(2, user.getLastname());
+        preparedStatement.setString(3, user.getPhone());
 
         preparedStatement.executeUpdate();
 

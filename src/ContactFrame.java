@@ -9,22 +9,20 @@ public class ContactFrame extends JFrame implements ActionListener {
 
     private JPanel mainPanel, interPanel, buttonPanel;
 
-    private JTextArea contactTextArea;
+    private static JTextArea contactTextArea;
 
     private Connection connection;
 
     public ContactFrame(String title, Connection connection) {
         super(title);
-
         this.connection = connection;
-
         initializeComponents();
-        interPanel.setSize(350, 100);
+        interPanel.setSize(350, 150);
         createButtonAdd();
         configureMainPanel();
         configureFrame();
 
-        loadUsers();
+        loadUsers(connection);
     }
 
     private void initializeComponents() {
@@ -33,8 +31,9 @@ public class ContactFrame extends JFrame implements ActionListener {
         contactTextArea = new JTextArea();
         buttonPanel = new JPanel();
 
-        Font font = new Font("Arial", Font.PLAIN , 48);
+        Font font = new Font("Arial", Font.PLAIN , 16);
         contactTextArea.setFont(font);
+        contactTextArea.setSize(350,150);
 
         interPanel.add(contactTextArea);
     }
@@ -59,17 +58,28 @@ public class ContactFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    private void loadUsers() {
+    public static void loadUsers(Connection connection) {
 
         try {
-            ArrayList<User> users = User.getAllUsers(Connection connection);
-        } catch () {
+            contactTextArea.setText("");
+            ArrayList<User> users = User.getAllUsers(connection);
 
+            users.forEach(u -> {
+                StringBuilder stringUser = new StringBuilder();
+
+                stringUser.append(u.getId()).append(" ").append(u.getFirstname()).append(" ").append(u.getLastname()).append(" ").append(u.getPhone()).append("\n");
+                contactTextArea.append(stringUser.toString());
+            });
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new AddContactFrame("Ajouter un contact");
+        AddContactFrame addContactFrame = new AddContactFrame("Ajouter un contact", connection);
+
     }
+
 }

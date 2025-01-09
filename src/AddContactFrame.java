@@ -1,12 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
 
-public class AddContactFrame extends JFrame {
+public class AddContactFrame extends JFrame implements ActionListener {
 
     private JPanel mainPanel, interPanel, buttonPanel;
+    private JTextField tfFirstname, tfLastname, tfPhone;
 
-    public AddContactFrame(String title) {
+    private Connection connection;
+
+    public AddContactFrame(String title, Connection connection) {
         super(title);
+        this.connection = connection;
         initializeComponents();
         interPanel.setSize(350, 100);
         configureInterPanel();
@@ -23,7 +30,7 @@ public class AddContactFrame extends JFrame {
 
     private void createButtonAdd() {
         JButton btnAdd = new JButton("Valider");
-
+        btnAdd.addActionListener(this);
         buttonPanel.add(btnAdd);
     }
 
@@ -34,9 +41,9 @@ public class AddContactFrame extends JFrame {
     }
 
     private void configureInterPanel() {
-        JTextField tfFirstname = new JTextField();
-        JTextField tfLastname = new JTextField();
-        JTextField tfPhone = new JTextField();
+        tfFirstname = new JTextField();
+        tfLastname = new JTextField();
+        tfPhone = new JTextField();
 
         interPanel.add(new JLabel("Nom : "));
         interPanel.add(tfLastname);
@@ -55,5 +62,23 @@ public class AddContactFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            User user = new User();
+            user.setFirstname(tfFirstname.getText());
+            user.setLastname(tfLastname.getText());
+            user.setPhone(tfPhone.getText());
+            User.addUser(connection, user);
+
+            ContactFrame.loadUsers(connection);
+
+            dispose();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
 
 }
