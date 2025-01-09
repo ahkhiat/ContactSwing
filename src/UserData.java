@@ -13,12 +13,12 @@ public class UserData {
 
         while (rs.next()) {
             User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setFirstname(rs.getString("firstname"));
-            user.setLastname(rs.getString("lastname"));
-            user.setPhone(rs.getString("phone"));
+                user.setId(rs.getLong("id"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setLastname(rs.getString("lastname"));
+                user.setPhone(rs.getString("phone"));
 
-            usersList.add(user);
+                usersList.add(user);
         }
 
         rs.close();
@@ -26,7 +26,7 @@ public class UserData {
         return usersList;
     }
 
-    public static void addUser(Connection connection, User user) throws SQLException {
+    public static boolean addUser(Connection connection, User user) throws SQLException {
         String query = "INSERT INTO user (firstname, lastname, phone) " +
                 "VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -35,9 +35,17 @@ public class UserData {
         preparedStatement.setString(2, user.getLastname());
         preparedStatement.setString(3, user.getPhone());
 
-        preparedStatement.executeUpdate();
+        int row = preparedStatement.executeUpdate();
 
         preparedStatement.close();
 
+        // astuce qui permet de renvoyer un boolean pour que l'appelant puisse savoir si l'action
+        // s'est bien deroulée
+        return row == 1;
+
     }
+
+
+
+
 }

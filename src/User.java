@@ -8,7 +8,6 @@ public class User {
     String lastname;
     String phone;
 
-
     public long getId() {
         return id;
     }

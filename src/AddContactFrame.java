@@ -66,15 +66,29 @@ public class AddContactFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            User user = new User();
-            user.setFirstname(tfFirstname.getText());
-            user.setLastname(tfLastname.getText());
-            user.setPhone(tfPhone.getText());
-            UserData.addUser(connection, user);
+            String firstname = tfFirstname.getText();
+            String lastname = tfLastname.getText();
+            String phone = tfPhone.getText();
 
-            ContactFrame.loadUsers(connection);
+            if (!firstname.isEmpty() && !lastname.isEmpty() && !phone.isEmpty()) {
+                if (phone.matches("^[+]?[0-9]*$")) {
 
-            dispose();
+                    User user = new User();
+                    user.setFirstname(firstname);
+                    user.setLastname(lastname);
+                    user.setPhone(phone);
+
+                    UserData.addUser(connection, user);
+
+                    ContactFrame.loadUsers(connection);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Veuillez rentrer un numéro valide");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs");
+            }
+
         } catch (Exception ex) {
             System.out.println(ex);
         }
