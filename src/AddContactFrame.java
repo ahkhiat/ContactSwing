@@ -70,7 +70,7 @@ public class AddContactFrame extends JFrame implements ActionListener {
             user.setFirstname(tfFirstname.getText());
             user.setLastname(tfLastname.getText());
             user.setPhone(tfPhone.getText());
-            User.addUser(connection, user);
+            UserData.addUser(connection, user);
 
             ContactFrame.loadUsers(connection);
 

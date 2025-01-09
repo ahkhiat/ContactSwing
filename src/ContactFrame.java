@@ -62,7 +62,7 @@ public class ContactFrame extends JFrame implements ActionListener {
 
         try {
             contactTextArea.setText("");
-            ArrayList<User> users = User.getAllUsers(connection);
+            ArrayList<User> users = UserData.getAllUsers(connection);
 
             users.forEach(u -> {
                 StringBuilder stringUser = new StringBuilder();
